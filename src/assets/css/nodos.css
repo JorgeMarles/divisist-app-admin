@@ -1,0 +1,10 @@
+.nodo-materia {
+    padding: 5px;
+    border-radius: var(--xy-node-border-radius, var(--xy-node-border-radius-default));
+    width: 90px;
+    font-size: 8px;
+    color: var(--xy-node-color, var(--xy-node-color-default));
+    text-align: center;
+    border: var(--xy-node-border, var(--xy-node-border-default));
+    background-color: var(--xy-node-background-color, var(--xy-node-background-color-default));
+}
