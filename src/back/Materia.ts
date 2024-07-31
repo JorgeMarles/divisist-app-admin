@@ -2,7 +2,16 @@ import Dictionary from "./Dictionary";
 import Grupo from "./Grupo";
 import Pensum from "./Pensum";
 
+
+
+export enum MateriaState {
+    CREATED, DELETED, NOT_CHANGED
+}
+
+
 class Materia{
+    estado?: MateriaState;
+    carrera?: string;
     semestre?: number;
     codigo?: string;
     nombre?: string;
@@ -14,6 +23,7 @@ class Materia{
     nombreCodigo?: string;
 
     apply = (data: any) => {
+        
         this.semestre = data.semestre;
         this.codigo = data.codigo;
         this.nombre = data.nombre;
@@ -21,6 +31,8 @@ class Materia{
         this.creditos = data.creditos;
         this.requisitos = data.requisitos;
         this.isElectiva = data.isElectiva;
+        this.carrera = data.carrera;
+        this.estado = data.estado;
         this.grupos = {};
         for(const grupo in data.grupos){
             this.grupos[grupo] = new Grupo();
@@ -37,10 +49,8 @@ class Materia{
         return `${this.codigo} - ${this.nombre}`
     }
 
-    isValida = (): boolean => {
+    isValida = (pensum: Pensum): boolean => {
         const reg = /^(\d{7})$/g;
-        const pensum: Pensum = new Pensum();
-        pensum.init();
         for(const req of this.requisitos!){
             if(reg.test(req)){
                 if(!pensum.buscarMateria(req)){

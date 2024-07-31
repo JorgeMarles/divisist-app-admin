@@ -1,6 +1,6 @@
 import Dictionary from './Dictionary';
-import Materia from './Materia';
-import data from './pensum.json';
+import { GrupoState } from './Grupo';
+import Materia, { MateriaState } from './Materia';
 
 type MateriaJSONDict = {
     [key: string]: {
@@ -11,12 +11,15 @@ type MateriaJSONDict = {
         creditos: number;
         requisitos: string[];
         isElectiva: boolean;
+        carrera: string;
+        estado: MateriaState;
         grupos: {
             [key: string]: {
                 nombre: string;
                 profesor: string;
                 maximo: number;
                 disponible: number;
+                estado: GrupoState;
                 clases: {
                     dia: number;
                     horaInicio: number;
@@ -31,6 +34,9 @@ type MateriaJSONDict = {
 
 class Pensum {
     materias: Dictionary<Materia>;
+    codigo: string = "";
+    fechaCaptura: Date = new Date();
+    nombre: string = "";
 
     constructor(){
         this.materias = {};
@@ -62,9 +68,27 @@ class Pensum {
         return matriz;
     }
 
-    init = () =>{        
+    static getPensum = async(): Promise<Pensum> => {
+        const pensum: Pensum = new Pensum();
+        await pensum.init();
+        return pensum;
+    }
+
+    init = async (): Promise<void> =>{        
+
+        //const materias: MateriaJSONDict = data.materias;
+
+        const response = await fetch(`${import.meta.env.VITE_REACT_APP_BAKCEND_URL}/materias/pensum/115`, {
+            method: "GET"
+        })
+
+        const data = await response.json();
 
         const materias: MateriaJSONDict = data.materias;
+
+        this.codigo = data.codigo;
+        this.nombre = data.nombre;
+        this.fechaCaptura = new Date(data.fechaCaptura);        
 
         for(const materia in materias){
             

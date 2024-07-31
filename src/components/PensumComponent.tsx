@@ -1,14 +1,22 @@
-import { FC } from "react";
+import { FC, useEffect } from "react";
 import Materia from "../back/Materia";
 import { Table, TableRow } from "flowbite-react";
+import Pensum from "../back/Pensum";
 
 
 type PensumComponentType = {
     materias: Materia[][],
-    setMateria: Function
+    setMateria: Function,
+    pensum: Pensum
 };
 
-const PensumComponent: FC<PensumComponentType> = ({ materias, setMateria }) => {
+const PensumComponent: FC<PensumComponentType> = ({ materias, setMateria, pensum }) => {
+
+useEffect(()=>{
+    console.log(materias);
+    
+},[])
+
     return <>
         <div className="w-full md:w-[70%] overflow-auto">
             <Table className="rounded-none bg-white" border={2}>
@@ -27,7 +35,7 @@ const PensumComponent: FC<PensumComponentType> = ({ materias, setMateria }) => {
                                             <div>{materia.codigo}</div>
                                             <div>{materia.creditos} créditos</div>
                                         </Table.Cell>
-                                        return materia.isValida() ? contenido : <></>;
+                                        return materia.isValida(pensum) ? contenido : <></>;
                                     }).filter(el => el !== <></>)
                                 }
                                 <Table.Cell />

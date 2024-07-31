@@ -1,4 +1,4 @@
-import { Label, FileInput, Button, Progress, TextInput, ToggleSwitch } from "flowbite-react";
+import { Label, FileInput, Button, TextInput, ToggleSwitch } from "flowbite-react";
 import { useState, ChangeEvent, useEffect, FC } from "react";
 import ReactJson from "react-json-view";
 import { MdDownload, MdUpload } from "react-icons/md";
@@ -34,13 +34,24 @@ const PensumLoader: FC<PensumLoadComponentType> = ({ setLogs, setProgress }) => 
         return (x - inMin) * (outMax - outMin) / (inMax - inMin) + outMin;
     }
 
+    
+    const erasePensum = () => {
+        if(confirm("Deseas borrar el pensum?")){
+            fetch(`${import.meta.env.VITE_REACT_APP_BAKCEND_URL}/materias/deletepensum/115`, {
+                method: "DELETE"
+            })
+        }
+    }
+
     useEffect(() => {
 
         socket.on('progress', (data: DataSocket) => {
-            setLogs((logs: DataSocket[]) => [...logs, { ...data, date: new Date(data.date!) }])
+            setLogs((logs: DataSocket[]) => [{ ...data, date: new Date(data.date!) }, ...logs ])
             setProgress(roundTo(map(data.finished, 0, data.total, 1, 100), 2))
         });
         socket.on('exit', (data: DataSocket) => {
+            console.log("exit", data.data);
+            
             alert("Completed: " + data.message)
             setJson(data.data)
             setProgress(100);
@@ -51,17 +62,30 @@ const PensumLoader: FC<PensumLoadComponentType> = ({ setLogs, setProgress }) => 
     const handleSubmit = async () => {
         setProgress(0);
         setLogs([]);
-        const params: URLSearchParams = new URLSearchParams();
-        params.append('ci_session', cookie)
-        fetch(`${import.meta.env.VITE_REACT_APP_BAKCEND_URL}/divisist/pensum?${params.toString()}`, {
-            method: "GET"
-        })
+        if (showCookie) {
+            const params: URLSearchParams = new URLSearchParams();
+            params.append('ci_session', cookie)
+            params.append('delay','2');
+            fetch(`${import.meta.env.VITE_REACT_APP_BAKCEND_URL}/divisist/pensum?${params.toString()}`, {
+                method: "GET"
+            })
+        } else {
+            fetch(`${import.meta.env.VITE_REACT_APP_BAKCEND_URL}/materias/addpensum`, {
+                body: JSON.stringify(json),
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                method: "POST"
+            })
+        }
+
     }
 
     const handleBorrar = () => {
         setProgress(0);
         setLogs([]);
         setCookie("")
+        setJson({})
     }
 
     const handleFileChange = async (evt: ChangeEvent<HTMLInputElement>) => {
@@ -74,26 +98,20 @@ const PensumLoader: FC<PensumLoadComponentType> = ({ setLogs, setProgress }) => 
     }
 
     const descargar = () => {
+        console.log(json);
+        
         download(JSON.stringify(json), `pensum_${new Date().getTime()}.json`, ContentType.APPLICATION_JSON)
     }
 
     return (<>
-        <div className="w-1/2 flex flex-col max-h-[500px] min-h-[500px] bg-slate-300">
+        <div className="lg:w-1/2 w-full flex flex-col max-h-[500px] min-h-[500px] bg-slate-300">
             <div className="w-[98%] p-2 flex justify-between">
-                <ToggleSwitch checked={showCookie} label={`Mostrando ${showCookie ? "Cookie" : "JSON"}`} onChange={setShowCookie} />
-                <div className="w-[20%] flex justify-around items-end h-full">
+                <ToggleSwitch className="w-[60%]" checked={showCookie} label={`Mostrando ${showCookie ? "Cookie" : "JSON"}`} onChange={setShowCookie} />
+                <div className="w-[40%] flex justify-around items-end h-full">
                     <div className="h-fit">
-                        <Button.Group>
-                            <Button onClick={handleSubmit} color={"success"} title="Enviar JSON para procesar">
-                                <MdUpload className="size-5" />
-                            </Button>
-                            <Button onClick={handleBorrar} color={"failure"} title="Borrar JSON cargado">
-                                <RxCrossCircled className="size-5" />
-                            </Button>
-                            <Button onClick={descargar} color={"blue"} title="Descargar JSON">
-                                <MdDownload className="size-5" />
-                            </Button>
-                        </Button.Group>
+                        <Button onClick={erasePensum} color={"failure"}>
+                            Borrar Pensum
+                        </Button>
                     </div>
                 </div>
             </div>
@@ -101,12 +119,30 @@ const PensumLoader: FC<PensumLoadComponentType> = ({ setLogs, setProgress }) => 
                 <div>
                     <Label htmlFor="input" value={showCookie ? "ci_session Cookie" : "Archivo pensum.json"} />
                 </div>
-                {
-                    showCookie ?
-                        <TextInput id="input" pattern="[A-Fa-f0-9]{40}" value={cookie} onChange={handleValueChange} />
-                        :
-                        <FileInput id="input" helperText="JSON" accept=".JSON" onChange={handleFileChange} />
-                }
+                <div className="flex">
+                    <div className="w-8/12">
+                        {
+                            showCookie ?
+                                <>
+                                    <TextInput id="input" pattern="[A-Fa-f0-9]{40}" value={cookie} onChange={handleValueChange} />
+                                </>
+                                :
+                                <FileInput id="input" helperText="JSON" accept=".JSON" onChange={handleFileChange} />
+                        }
+                    </div>
+
+                    <Button.Group className="h-fit">
+                        <Button className="p-0" onClick={handleSubmit} color={"success"} title={`Enviar petición para procesar`}>
+                            <MdUpload className="size-5" />
+                        </Button>
+                        <Button className="p-0" onClick={handleBorrar} color={"failure"} title={`Borrar JSON cargado`}>
+                            <RxCrossCircled className="size-5" />
+                        </Button>
+                        <Button className="p-0" onClick={descargar} color={"blue"} title={`Descargar JSON`}>
+                            <MdDownload className="size-5" />
+                        </Button>
+                    </Button.Group>
+                </div>
             </div>
             <div className="p-2 overflow-auto">
                 <ReactJson

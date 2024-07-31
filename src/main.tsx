@@ -1,12 +1,18 @@
 import ReactDOM from 'react-dom/client'
 import './index.css'
-import { createBrowserRouter, Navigate, RouterProvider } from 'react-router-dom'
+import { createBrowserRouter, defer, Navigate, RouterProvider } from 'react-router-dom'
 import Base from './pages/Base.tsx'
 import Principal from './pages/Principal.tsx'
 import PensumTSX from './pages/PensumTSX.tsx'
 import MateriaInfo from './pages/MateriaInfo.tsx'
 import Grafico from './pages/Grafico.tsx'
 import Admin from './pages/Admin.tsx'
+import Pensum from './back/Pensum.ts'
+
+const pensumLoader = async (): Promise<Pensum> => {
+  const pensum: Pensum = await Pensum.getPensum();
+  return pensum
+}
 
 const router = createBrowserRouter([{
   path: "/",
@@ -15,15 +21,15 @@ const router = createBrowserRouter([{
     {
       path: "",
       index: true,
-      element: <Principal />
+      element: <Principal />,
     },
     {
       path: "pensum",
-      element: <PensumTSX /> 
+      element: <PensumTSX /> ,
     },
     {
       path: "materia/:idMateria",
-      element: <MateriaInfo />
+      element: <MateriaInfo />,
     },
     {
       path: "materia",
@@ -31,11 +37,11 @@ const router = createBrowserRouter([{
     },
     {
       path: "grafico",
-      element: <Grafico />
+      element: <Grafico />,
     },
     {
       path: "admin",
-      element: <Admin />
+      element: <Admin />,
     }
   ]
 }])

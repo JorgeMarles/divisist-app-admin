@@ -22,7 +22,7 @@ const MateriaInfoSelect: FC<MateriaInfoSelectType> = ({ matricula, eliminarMater
                 setSelectedValue(i)
             }
             const resp: string = horario.grupoValido(grupo, matricula.materia!);
-            const isDisabled: boolean = codigo === matricula.codigoGrupo ? false : resp !== '';
+            const isDisabled: boolean = codigo === matricula.codigoGrupo ? false : resp !== '';            
             return {
                 value: codigo,
                 label: grupo.toString() + (isDisabled ? `\n(Conflicto con ${resp})` : ""),

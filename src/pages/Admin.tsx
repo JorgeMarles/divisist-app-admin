@@ -1,20 +1,15 @@
-import { ChangeEvent, useEffect, useState } from "react";
+import { useState } from "react";
 import LogsProgress from "../components/LogsProgress";
-import { DataSocket, SocketMessageStatus } from "../util/typeReact";
+import { DataSocket } from "../util/typeReact";
 import PensumLoader from "../components/PensumLoader";
 
-
-
-
-
-
 const Admin = () => {
-    const [logs, setLogs] = useState<DataSocket[]>(Array<DataSocket>(100).fill({ finished: 10, total: 30, message: "olasdjiaiedfhwriyhvurnvuhebuchnwhdbuwhbefhwbvhbwhjrsdfwfrerfa", status: SocketMessageStatus.OK, date: new Date() }));
-    const [progress, setProgress] = useState<number>(20.66666666666);
+    const [logs, setLogs] = useState<DataSocket[]>([]);
+    const [progress, setProgress] = useState<number>(0);
 
     return (
         <>
-            <div className="flex">
+            <div className="flex lg:flex-row flex-col">
                 <PensumLoader setLogs={setLogs} setProgress={setProgress} />
                 <LogsProgress logs={logs} progress={progress} />
             </div>

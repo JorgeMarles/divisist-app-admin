@@ -1,11 +1,24 @@
 import Clase from "./Clase";
 
+export enum GrupoState {
+    NOT_CHANGED, CHANGED, CREATED, DELETED
+}
+
+const getEstado = (estado: GrupoState): string => {
+    if(estado === GrupoState.CHANGED)return "Cambio de Horario";
+    if(estado === GrupoState.NOT_CHANGED)return "Mismo Horario";
+    if(estado === GrupoState.CREATED)return "Nuevo Grupo";
+    if(estado === GrupoState.DELETED)return "Grupo Eliminado";
+    else return estado
+}
+
 class Grupo{
     nombre?: string;
     profesor?: string;
     maximo?: number;
     disponible?: number;
     clases?: Clase[];
+    estado?: GrupoState;
 
     apply = (data: any) => {
         this.nombre = data.nombre;
@@ -13,6 +26,8 @@ class Grupo{
         this.maximo = data.maximo;
         this.disponible = data.disponible;
         this.clases = [];
+        this.estado = data.estado;
+        
         for(const claseAny of data.clases){
             const clase = new Clase();
             clase.apply(claseAny);
@@ -21,7 +36,7 @@ class Grupo{
     }
 
     toString = (): string => {
-        return `${this.nombre} - ${this.profesor}`
+        return `${this.nombre} - ${this.profesor} (${getEstado(this.estado!)})`
     }
 }
 
