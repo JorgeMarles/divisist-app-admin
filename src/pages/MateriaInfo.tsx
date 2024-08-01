@@ -1,14 +1,13 @@
-import { useLoaderData, useNavigate, useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { usePensum } from "./Base";
 import { useEffect, useState } from "react";
 import Materia from "../back/Materia";
 import Grupo from "../back/Grupo";
-import Pensum from "../back/Pensum";
 
 
 const MateriaInfo = () => {
     const { idMateria } = useParams();
-    const pensum = useLoaderData() as Pensum;
+    const {pensum} = usePensum();
     const [materia, setMateria] = useState<Materia>(new Materia());
     const navigate = useNavigate();
 

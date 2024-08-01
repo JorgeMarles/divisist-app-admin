@@ -1,18 +1,16 @@
 import ReactDOM from 'react-dom/client'
 import './index.css'
-import { createBrowserRouter, defer, Navigate, RouterProvider } from 'react-router-dom'
+import { createBrowserRouter, Navigate, RouterProvider } from 'react-router-dom'
 import Base from './pages/Base.tsx'
 import Principal from './pages/Principal.tsx'
 import PensumTSX from './pages/PensumTSX.tsx'
 import MateriaInfo from './pages/MateriaInfo.tsx'
 import Grafico from './pages/Grafico.tsx'
 import Admin from './pages/Admin.tsx'
-import Pensum from './back/Pensum.ts'
+import { Bounce, ToastContainer } from 'react-toastify'
+import 'react-toastify/dist/ReactToastify.css';
 
-const pensumLoader = async (): Promise<Pensum> => {
-  const pensum: Pensum = await Pensum.getPensum();
-  return pensum
-}
+
 
 const router = createBrowserRouter([{
   path: "/",
@@ -25,7 +23,7 @@ const router = createBrowserRouter([{
     },
     {
       path: "pensum",
-      element: <PensumTSX /> ,
+      element: <PensumTSX />,
     },
     {
       path: "materia/:idMateria",
@@ -47,5 +45,20 @@ const router = createBrowserRouter([{
 }])
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
-    <RouterProvider router={router}/>
+  <>
+    <RouterProvider router={router} />
+    <ToastContainer
+      position="bottom-right"
+      autoClose={5000}
+      hideProgressBar={false}
+      newestOnTop={false}
+      closeOnClick
+      rtl={false}
+      pauseOnFocusLoss
+      draggable
+      pauseOnHover
+      theme="colored"
+      transition={Bounce}
+    />
+  </>
 )

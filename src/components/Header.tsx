@@ -1,7 +1,7 @@
 import { CustomFlowbiteTheme, Navbar } from "flowbite-react";
 import { NavLink, useLocation } from "react-router-dom";
-import Pensum from "../back/Pensum";
-import { FC, useEffect, useState } from "react";
+import { FC } from "react";
+import { FunctionPensum } from "../util/typeReact";
 
 const theme: CustomFlowbiteTheme["navbar"] = {
     link: {
@@ -17,13 +17,12 @@ const theme: CustomFlowbiteTheme["navbar"] = {
 }
 
 
-const Header = () => {
-    const location = useLocation();
-    const [pensum] = useState<Pensum>(new Pensum());
 
-    useEffect(()=>{
-        pensum.init();
-    }, [])
+
+const Header: FC<FunctionPensum> = ({pensum,loading}) => {
+    const location = useLocation();
+    
+    
 
     return (
         <>
@@ -31,7 +30,7 @@ const Header = () => {
 
                 <Navbar.Brand>
                     <span className="self-center whitespace-nowrap text-3xl font-semibold dark:text-white">
-                        DivisistApp ({`Pensum de ${pensum.nombre}, tomado el ${pensum.fechaCaptura.toLocaleString()}`})
+                        DivisistApp {loading ? "" : `(${pensum.nombre}, al ${pensum.fechaCaptura.toLocaleString()})`}
                     </span>
                 </Navbar.Brand>
                 <Navbar.Toggle />

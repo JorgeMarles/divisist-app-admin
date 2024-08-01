@@ -1,18 +1,13 @@
-import { useState, useEffect, FC } from "react";
+import { useState, useEffect } from "react";
 import Materia from "../back/Materia";
 import PensumComponent from "../components/PensumComponent";
 import ShowMateriaInfo from "../components/ShowMateriaInfo";
 import { usePensum } from "./Base";
-import { useLoaderData } from "react-router-dom";
-import Pensum from "../back/Pensum";
 
 
-type PensumProp = {
-    pensum: Pensum
-}
 
-const PensumTSX: FC<PensumProp> = ({pensum}) => {
-
+const PensumTSX =  () => {
+    const {pensum} = usePensum();
     const [pensumX, setPensumX] = useState<Materia[][]>([]);
     const [materia, setMateria] = useState<Materia>(new Materia());
 

@@ -21,8 +21,7 @@ import {
 import { getNodeList, MateriaDesbloqueo, MateriaNode } from "../back/graph/utilsNode";
 import MateriaNodeTSX from "../back/graph/MateriaNodeTSX";
 import Materia from "../back/Materia";
-import { useLoaderData } from "react-router-dom";
-import Pensum from "../back/Pensum";
+
 
 const materia: Materia = new Materia();
 materia.codigo = '1155404';
@@ -52,7 +51,7 @@ const defaultEdgeOptions: DefaultEdgeOptions = {
 
 
 const Grafico = () => {
-    const pensum = useLoaderData() as Pensum;
+    const {pensum} = usePensum();
     const [nodes, setNodes] = useState<MateriaNode[]>(initialNodes);
     const [edges, setEdges] = useState<Edge[]>(initialEdges);
     const nodeTypes = useMemo(() => ({ materia: MateriaNodeTSX }), []);

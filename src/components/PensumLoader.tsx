@@ -7,6 +7,7 @@ import download, { ContentType } from "../util/download";
 import { DataSocket, SetState } from "../util/typeReact";
 import { RxCrossCircled } from "react-icons/rx";
 import { roundTo } from "../util/numberUtil";
+import { toast } from "react-toastify";
 
 
 export type PensumLoadComponentType = {
@@ -34,38 +35,51 @@ const PensumLoader: FC<PensumLoadComponentType> = ({ setLogs, setProgress }) => 
         return (x - inMin) * (outMax - outMin) / (inMax - inMin) + outMin;
     }
 
-    
+
     const erasePensum = () => {
-        if(confirm("Deseas borrar el pensum?")){
-            fetch(`${import.meta.env.VITE_REACT_APP_BAKCEND_URL}/materias/deletepensum/115`, {
+        if (confirm("Deseas borrar el pensum?")) {
+            toast.promise(fetch(`${import.meta.env.VITE_REACT_APP_BAKCEND_URL}/materias/deletepensum/115`, {
                 method: "DELETE"
-            })
+            }),
+                {
+                    error: "Ha ocurrido un error borrando el pensum",
+                    pending: "Borrando Pensum de la base de datos",
+                    success: "Pensum borrado correctamente de la base de datos"
+                }
+            )
         }
     }
 
     useEffect(() => {
 
         socket.on('progress', (data: DataSocket) => {
-            setLogs((logs: DataSocket[]) => [{ ...data, date: new Date(data.date!) }, ...logs ])
+            setLogs((logs: DataSocket[]) => [{ ...data, date: new Date(data.date!) }, ...logs])
             setProgress(roundTo(map(data.finished, 0, data.total, 1, 100), 2))
         });
         socket.on('exit', (data: DataSocket) => {
             console.log("exit", data.data);
-            
-            alert("Completed: " + data.message)
+
+            toast.success(data.message)
             setJson(data.data)
             setProgress(100);
         });
+        socket.on('error', (data: DataSocket) => {
+            toast.error(data.message)
+        })
     }, [])
 
 
     const handleSubmit = async () => {
         setProgress(0);
         setLogs([]);
+        if(!/[A-Fa-f0-9]{40}/g.test(cookie)){
+            toast.error('El valor de la cookie no es válido, debe ser un texto de 40 caracteres hexadecimales.')
+            return;
+        }
         if (showCookie) {
             const params: URLSearchParams = new URLSearchParams();
             params.append('ci_session', cookie)
-            params.append('delay','2');
+            params.append('delay', '2');
             fetch(`${import.meta.env.VITE_REACT_APP_BAKCEND_URL}/divisist/pensum?${params.toString()}`, {
                 method: "GET"
             })
@@ -99,7 +113,7 @@ const PensumLoader: FC<PensumLoadComponentType> = ({ setLogs, setProgress }) => 
 
     const descargar = () => {
         console.log(json);
-        
+
         download(JSON.stringify(json), `pensum_${new Date().getTime()}.json`, ContentType.APPLICATION_JSON)
     }
 

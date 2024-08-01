@@ -176,6 +176,15 @@ class Horario {
         return Object.entries(this.materiasMatriculadas!).map(el => el[1].codigoGrupo).join(",")
     }
 
+    getMateriasListAsString = (): string => {
+        const listaMaterias: string[] = []
+        for(const matriculaCod in this.materiasMatriculadas){
+            const matricula: Matricula = this.materiasMatriculadas[matriculaCod];
+            listaMaterias.push(matricula.materia!.codigo!+"->"+matricula.codigoGrupo!)
+        }
+        return listaMaterias.join("\n")
+    }
+
 }
 
 export default Horario;

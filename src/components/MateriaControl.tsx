@@ -5,6 +5,9 @@ import Pensum from "../back/Pensum";
 import ListaMaterias from "./ListaMaterias";
 import Horario from "../back/Horario";
 import Matricula from "../back/Matricula";
+import { IoMdAdd } from "react-icons/io";
+import { FaRegClipboard } from "react-icons/fa";
+import { toast } from "react-toastify";
 
 
 type MateriaControlType = {
@@ -29,15 +32,15 @@ const MateriaControl: FC<MateriaControlType> = ({ horario, setHorario, pensum })
                     console.log(horarioNew.toString());
                     
                     setHorario(horarioNew)
-                } catch (error) {
-                    alert(error)
+                } catch (error: any) {
+                    toast.error(error)
                 }
 
             } else {
-                alert(`No existe una materia con codigo ${codMateria}`)
+                toast.error(`No existe una materia con codigo ${codMateria}`)
             }
         } else {
-            alert(`${codMateria} no es un codigo de materia válido`)
+            toast.error(`${codMateria} no es un codigo de materia válido`)
         }
     }
 
@@ -47,9 +50,9 @@ const MateriaControl: FC<MateriaControlType> = ({ horario, setHorario, pensum })
             horarioNew.from(horario);
             horarioNew.asignarMatricula(matricula);
             setHorario(horarioNew)
-        } catch (error) {
+        } catch (error: any) {
             callbackError!();
-            alert(error)
+            toast.error(error)
         }
     }
 
@@ -65,8 +68,8 @@ const MateriaControl: FC<MateriaControlType> = ({ horario, setHorario, pensum })
             } else {
                 throw `Materia con codigo ${codigo} no encontrada`
             }
-        } catch (error) {
-            alert(error)
+        } catch (error: any) {
+            toast.error(error)
         }
     }
 
@@ -85,6 +88,10 @@ const MateriaControl: FC<MateriaControlType> = ({ horario, setHorario, pensum })
         }
     }
 
+    const copyToClipboard = () => {
+        navigator.clipboard.writeText(horario.getMateriasListAsString())
+    }
+
 
     return <>
         <div className="w-full md:w-[30%] md:max-h-[500px] md:h-[500px] flex flex-col h-[300px] bg-gray-100">
@@ -97,7 +104,10 @@ const MateriaControl: FC<MateriaControlType> = ({ horario, setHorario, pensum })
 
                 </div>
                 <div className="flex items-end">
-                    <Button className="h-1/2 items-end bg-red-600" onClick={addMateria}>Añadir</Button>
+                    <Button.Group>
+                        <Button className="h-1/2 items-end bg-red-600 p-0" onClick={addMateria}><IoMdAdd className="h-6 w-6 m-0" /></Button>  
+                        <Button className="h-1/2 items-end p-0" color={'blue'} onClick={copyToClipboard}><FaRegClipboard className="h-6 w-6 m-0"/></Button>  
+                    </Button.Group>
                 </div>
             </div>
             <ListaMaterias asignarMatricula={asignarMatricula} eliminarMateria={eliminarMateria} horario={horario} />
