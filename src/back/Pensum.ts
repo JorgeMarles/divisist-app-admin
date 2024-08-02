@@ -78,7 +78,7 @@ class Pensum {
 
         //const materias: MateriaJSONDict = data.materias;
 
-        const response = await fetch(`${import.meta.env.VITE_REACT_APP_BAKCEND_URL}/materias/pensum/115`, {
+        const response = await fetch(`${import.meta.env.VITE_REACT_APP_BACKEND_URL}/materias/pensum/115`, {
             method: "GET"
         })
 
