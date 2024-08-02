@@ -1,6 +1,6 @@
 import ReactDOM from 'react-dom/client'
 import './index.css'
-import { createHashRouter, Navigate, RouterProvider } from 'react-router-dom'
+import { createBrowserRouter, Navigate, RouterProvider } from 'react-router-dom'
 import Base from './pages/Base.tsx'
 import Principal from './pages/Principal.tsx'
 import PensumTSX from './pages/PensumTSX.tsx'
@@ -13,41 +13,43 @@ import Login from './components/Login.tsx'
 
 
 
-const router = createHashRouter([{
-  path: "/divisist-app-admin/",
+const router = createBrowserRouter([{
+  path: "/",
   element: <Base />,
   children: [
     {
-      path: "/divisist-app-admin/",
+      path: "/",
       index: true,
       element: <Principal />,
     },
     {
-      path: "/divisist-app-admin/pensum",
+      path: "/pensum",
       element: <PensumTSX />,
     },
     {
-      path: "/divisist-app-admin/materia/:idMateria",
+      path: "/materia/:idMateria",
       element: <MateriaInfo />,
     },
     {
-      path: "/divisist-app-admin/materia",
-      element: <Navigate to={'/divisist-app-admin/pensum'} />
+      path: "/materia",
+      element: <Navigate to={'/pensum'} />
     },
     {
-      path: "/divisist-app-admin/grafico",
+      path: "/grafico",
       element: <Grafico />,
     },
     {
-      path: "/divisist-app-admin/admin",
+      path: "/admin",
       element: <Admin />,
     },
     {
-      path: "/divisist-app-admin/login",
+      path: "/login",
       element: <Login />
     }
   ]
-}])
+}], {
+  basename: "/divisist-app-admin/"
+})
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
   <>
