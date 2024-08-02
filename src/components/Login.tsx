@@ -13,7 +13,7 @@ const Login = () => {
     const navigate = useNavigate();
     useEffect(() => {
         if (getUser() !== null) {
-            navigate("/divisist-app-admin/admin")
+            navigate("/admin")
         }
     }, [])
 
@@ -22,7 +22,7 @@ const Login = () => {
         toast.promise<UserJWT>(new Promise<UserJWT>(async (resolve,reject)=>{
             try{
                 const response = await login(username, password);
-                navigate("/divisist-app-admin/admin")
+                navigate("/admin")
                 resolve(response)
             }catch(error: any){
                 reject(error)
