@@ -2,6 +2,7 @@ import { CustomFlowbiteTheme, Navbar } from "flowbite-react";
 import { NavLink, useLocation } from "react-router-dom";
 import { FC } from "react";
 import { FunctionPensum } from "../util/typeReact";
+import useUser from "../hooks/useUser";
 
 const theme: CustomFlowbiteTheme["navbar"] = {
     link: {
@@ -19,10 +20,10 @@ const theme: CustomFlowbiteTheme["navbar"] = {
 
 
 
-const Header: FC<FunctionPensum> = ({pensum,loading}) => {
+const Header: FC<FunctionPensum> = ({ pensum, loading }) => {
     const location = useLocation();
-    
-    
+    const { getUser } = useUser();
+
 
     return (
         <>
@@ -30,7 +31,7 @@ const Header: FC<FunctionPensum> = ({pensum,loading}) => {
 
                 <Navbar.Brand>
                     <span className="self-center whitespace-nowrap text-3xl font-semibold dark:text-white">
-                        DivisistApp {loading ? "" : `(${pensum.nombre}, al ${pensum.fechaCaptura.toLocaleString()})`}
+                        DivisistApp <span className="text-lg">{loading ? "" : `(${pensum.nombre}, al ${pensum.fechaCaptura.toLocaleString()})`}</span>
                     </span>
                 </Navbar.Brand>
                 <Navbar.Toggle />
@@ -50,11 +51,20 @@ const Header: FC<FunctionPensum> = ({pensum,loading}) => {
                             Gráfico
                         </Navbar.Link>
                     </NavLink>
-                    <NavLink to={"/admin"}>
-                        <Navbar.Link as="div" className="text-white text-lg hover:bg-darkred  md:hover:bg-principal" active={location.pathname === "/informacion"}>
-                            Administracion
-                        </Navbar.Link>
-                    </NavLink>
+                    {
+                        getUser() !== null ?
+                            <NavLink to={"/admin"}>
+                                <Navbar.Link as="div" className="text-white text-lg hover:bg-darkred  md:hover:bg-principal" active={location.pathname === "/informacion"}>
+                                    Administracion
+                                </Navbar.Link>
+                            </NavLink>
+                            :
+                            <NavLink to={"/login"}>
+                                <Navbar.Link as="div" className="text-white text-lg hover:bg-darkred  md:hover:bg-principal" active={location.pathname === "/informacion"}>
+                                    Iniciar Sesión
+                                </Navbar.Link>
+                            </NavLink>
+                    }
                 </Navbar.Collapse>
             </Navbar>
         </>

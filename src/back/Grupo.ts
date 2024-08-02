@@ -5,11 +5,8 @@ export enum GrupoState {
 }
 
 const getEstado = (estado: GrupoState): string => {
-    if(estado === GrupoState.CHANGED)return "Cambio de Horario";
-    if(estado === GrupoState.NOT_CHANGED)return "Mismo Horario";
-    if(estado === GrupoState.CREATED)return "Nuevo Grupo";
-    if(estado === GrupoState.DELETED)return "Grupo Eliminado";
-    else return estado
+    if(estado === GrupoState.DELETED)return "(Grupo Eliminado)";
+    else return ""
 }
 
 class Grupo{
@@ -36,7 +33,7 @@ class Grupo{
     }
 
     toString = (): string => {
-        return `${this.nombre} - ${this.profesor} (${getEstado(this.estado!)})`
+        return `${this.nombre} - ${this.profesor} ${getEstado(this.estado!)}`
     }
 }
 

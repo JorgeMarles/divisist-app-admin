@@ -9,10 +9,14 @@ type PensumType = {pensum: Pensum}
 const Base = () => {
     const [pensum,_] = useState<Pensum>(new Pensum())
     const [loading, setLoading] = useState<boolean>(true);
+    const [error, setError] = useState<boolean>(false);
 
     useEffect(()=>{
         console.log(import.meta.env.VITE_REACT_APP_BAKCEND_URL);
         pensum.init().then(()=>{
+            setLoading(false)
+        }).catch(()=>{
+            setError(true)
             setLoading(false)
         })
     }, [])
@@ -22,6 +26,9 @@ const Base = () => {
             <Header pensum={pensum} loading={loading} />
             <div className='h-4/6 overflow-y-auto m-14'>
                 {
+                    error ? 
+                    <>Error</>
+                    :
                     loading ? 
                     <>Cargando...</>
                     :

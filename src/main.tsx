@@ -9,6 +9,7 @@ import Grafico from './pages/Grafico.tsx'
 import Admin from './pages/Admin.tsx'
 import { Bounce, ToastContainer } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css';
+import Login from './components/Login.tsx'
 
 
 
@@ -40,6 +41,10 @@ const router = createBrowserRouter([{
     {
       path: "admin",
       element: <Admin />,
+    },
+    {
+      path: "login",
+      element: <Login />
     }
   ]
 }])

@@ -8,6 +8,12 @@ export enum MateriaState {
     CREATED, DELETED, NOT_CHANGED
 }
 
+export const getEstado = (estado: MateriaState): string => {
+    if(estado === MateriaState.NOT_CHANGED)return "Igual";
+    if(estado === MateriaState.CREATED)return "Nueva Materia";
+    if(estado === MateriaState.DELETED)return "Materia Eliminada";
+    else return estado
+}
 
 class Materia{
     estado?: MateriaState;

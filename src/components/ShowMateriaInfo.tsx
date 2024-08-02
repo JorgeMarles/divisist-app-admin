@@ -1,5 +1,5 @@
 import { FC } from "react";
-import Materia from "../back/Materia"
+import Materia, { getEstado } from "../back/Materia"
 import Pensum from "../back/Pensum";
 import Grupo from "../back/Grupo";
 import { Accordion } from "flowbite-react";
@@ -18,9 +18,9 @@ const ShowMateriaInfo: FC<ShowMateriaInfoType> = ({ materia, pensum }) => {
         if (reg.test(requisito)) {
 
             const materia = pensum.buscarMateria(requisito);
-            if(materia){
+            if (materia) {
                 return materia.toString();
-            }else{
+            } else {
                 return ""
             }
         } else {
@@ -77,6 +77,14 @@ const ShowMateriaInfo: FC<ShowMateriaInfoType> = ({ materia, pensum }) => {
                                     {materia.isElectiva ? "Sí" : "No"}
                                 </div>
                             </div>
+                            <div className="flex justify-between w-1/2">
+                                <div className="font-semibold">
+                                    Estado de la materia
+                                </div>
+                                <div>
+                                    {getEstado(materia.estado!)}
+                                </div>
+                            </div>
                         </div>
                         <div className="w-full flex flex-col items-center">
                             {
@@ -98,8 +106,8 @@ const ShowMateriaInfo: FC<ShowMateriaInfoType> = ({ materia, pensum }) => {
                                 Object.entries(materia.grupos!).length > 0 ?
                                     <>
                                         <Accordion className="w-full bg-slate-300" collapseAll>
-                                            {Object.entries(materia.grupos!).map(([_, grupo]: [string, Grupo]) => {
-                                                const contenido =  <Accordion.Panel key={"codigo_grupo_" + _}>
+                                            {Object.entries(materia.grupos!).sort((a, b) => a[0].localeCompare(b[0])).map(([_, grupo]: [string, Grupo]) => {
+                                                const contenido = <Accordion.Panel key={"codigo_grupo_" + _}>
                                                     <Accordion.Title className="bg-red-500 focus:bg-red-500 focus:ring-0 text-white hover:bg-red-600">
                                                         {grupo.toString()}
                                                     </Accordion.Title>
@@ -138,7 +146,7 @@ const ShowMateriaInfo: FC<ShowMateriaInfoType> = ({ materia, pensum }) => {
                                                                         <ul>
                                                                             {
                                                                                 grupo.clases!.map((el) => {
-                                                                                    return <li key={"grupo_"+grupo.nombre+"_clase_"+el.toString()}>{el.toString()}</li>
+                                                                                    return <li key={"grupo_" + grupo.nombre + "_clase_" + el.toString()}>{el.toString()}</li>
                                                                                 })
                                                                             }
                                                                         </ul>

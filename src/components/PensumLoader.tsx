@@ -8,6 +8,7 @@ import { DataSocket, SetState } from "../util/typeReact";
 import { RxCrossCircled } from "react-icons/rx";
 import { roundTo } from "../util/numberUtil";
 import { toast } from "react-toastify";
+import useUser from "../hooks/useUser";
 
 
 export type PensumLoadComponentType = {
@@ -21,6 +22,7 @@ const PensumLoader: FC<PensumLoadComponentType> = ({ setLogs, setProgress }) => 
     const [cookie, setCookie] = useState<string>("");
     const [json, setJson] = useState<object>({});
     const [showCookie, setShowCookie] = useState<boolean>(true);
+    const {getAccessToken} = useUser();
 
     /**
      * Reescala un valor de un rango de entrada a un rango de salida.
@@ -39,7 +41,10 @@ const PensumLoader: FC<PensumLoadComponentType> = ({ setLogs, setProgress }) => 
     const erasePensum = () => {
         if (confirm("Deseas borrar el pensum?")) {
             toast.promise(fetch(`${import.meta.env.VITE_REACT_APP_BAKCEND_URL}/materias/deletepensum/115`, {
-                method: "DELETE"
+                method: "DELETE",
+                headers: {
+                    'authorization': `Bearer ${getAccessToken()}`
+                }
             }),
                 {
                     error: "Ha ocurrido un error borrando el pensum",
@@ -72,7 +77,7 @@ const PensumLoader: FC<PensumLoadComponentType> = ({ setLogs, setProgress }) => 
     const handleSubmit = async () => {
         setProgress(0);
         setLogs([]);
-        if(!/[A-Fa-f0-9]{40}/g.test(cookie)){
+        if(showCookie && !/[A-Fa-f0-9]{40}/g.test(cookie)){
             toast.error('El valor de la cookie no es válido, debe ser un texto de 40 caracteres hexadecimales.')
             return;
         }
@@ -80,14 +85,20 @@ const PensumLoader: FC<PensumLoadComponentType> = ({ setLogs, setProgress }) => 
             const params: URLSearchParams = new URLSearchParams();
             params.append('ci_session', cookie)
             params.append('delay', '2');
+            console.log(getAccessToken());
+            
             fetch(`${import.meta.env.VITE_REACT_APP_BAKCEND_URL}/divisist/pensum?${params.toString()}`, {
-                method: "GET"
+                method: "GET",
+                headers: {
+                    'authorization': `Bearer ${getAccessToken()}`
+                }
             })
         } else {
             fetch(`${import.meta.env.VITE_REACT_APP_BAKCEND_URL}/materias/addpensum`, {
                 body: JSON.stringify(json),
                 headers: {
-                    'Content-Type': 'application/json'
+                    'Content-Type': 'application/json',
+                    'authorization': `Bearer ${getAccessToken()}`
                 },
                 method: "POST"
             })
