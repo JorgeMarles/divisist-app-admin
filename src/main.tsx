@@ -1,6 +1,6 @@
 import ReactDOM from 'react-dom/client'
 import './index.css'
-import { createBrowserRouter, Navigate, RouterProvider } from 'react-router-dom'
+import { createHashRouter, Navigate, RouterProvider } from 'react-router-dom'
 import Base from './pages/Base.tsx'
 import Principal from './pages/Principal.tsx'
 import PensumTSX from './pages/PensumTSX.tsx'
@@ -13,7 +13,7 @@ import Login from './components/Login.tsx'
 
 
 
-const router = createBrowserRouter([{
+const router = createHashRouter([{
   path: "/divisist-app-admin/",
   element: <Base />,
   children: [
