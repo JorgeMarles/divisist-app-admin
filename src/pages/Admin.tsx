@@ -13,7 +13,7 @@ const Admin = () => {
 
     useEffect(() => {
         if (getUser() === null) {
-            navigate("/login")
+            navigate("/divisist-app-admin/login")
         }
     }, [])
 

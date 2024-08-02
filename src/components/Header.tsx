@@ -36,30 +36,30 @@ const Header: FC<FunctionPensum> = ({ pensum, loading }) => {
                 </Navbar.Brand>
                 <Navbar.Toggle />
                 <Navbar.Collapse className="bg-principal" >
-                    <NavLink to={"/"} >
+                    <NavLink to={"/divisist-app-admin/"} >
                         <Navbar.Link as="div" className="text-white text-lg hover:bg-darkred md:hover:bg-principal " active={location.pathname === "/algoritmo" || location.pathname === "/seguimiento"} >
                             Simulador Horario
                         </Navbar.Link>
                     </NavLink>
-                    <NavLink to={"/pensum"}>
+                    <NavLink to={"/divisist-app-admin/pensum"}>
                         <Navbar.Link as="div" className="text-white text-lg hover:bg-darkred  md:hover:bg-principal" active={location.pathname === "/informacion"}>
                             Pensum
                         </Navbar.Link>
                     </NavLink>
-                    <NavLink to={"/grafico"}>
+                    <NavLink to={"/divisist-app-admin/grafico"}>
                         <Navbar.Link as="div" className="text-white text-lg hover:bg-darkred  md:hover:bg-principal" active={location.pathname === "/informacion"}>
                             Gráfico
                         </Navbar.Link>
                     </NavLink>
                     {
                         getUser() !== null ?
-                            <NavLink to={"/admin"}>
+                            <NavLink to={"/divisist-app-admin/admin"}>
                                 <Navbar.Link as="div" className="text-white text-lg hover:bg-darkred  md:hover:bg-principal" active={location.pathname === "/informacion"}>
                                     Administracion
                                 </Navbar.Link>
                             </NavLink>
                             :
-                            <NavLink to={"/login"}>
+                            <NavLink to={"/divisist-app-admin/login"}>
                                 <Navbar.Link as="div" className="text-white text-lg hover:bg-darkred  md:hover:bg-principal" active={location.pathname === "/informacion"}>
                                     Iniciar Sesión
                                 </Navbar.Link>

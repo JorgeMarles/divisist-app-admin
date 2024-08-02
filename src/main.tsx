@@ -14,36 +14,36 @@ import Login from './components/Login.tsx'
 
 
 const router = createBrowserRouter([{
-  path: "/",
+  path: "/divisist-app-admin/",
   element: <Base />,
   children: [
     {
-      path: "",
+      path: "/divisist-app-admin/",
       index: true,
       element: <Principal />,
     },
     {
-      path: "pensum",
+      path: "/divisist-app-admin/pensum",
       element: <PensumTSX />,
     },
     {
-      path: "materia/:idMateria",
+      path: "/divisist-app-admin/materia/:idMateria",
       element: <MateriaInfo />,
     },
     {
-      path: "materia",
-      element: <Navigate to={'/pensum'} />
+      path: "/divisist-app-admin/materia",
+      element: <Navigate to={'/divisist-app-admin/pensum'} />
     },
     {
-      path: "grafico",
+      path: "/divisist-app-admin/grafico",
       element: <Grafico />,
     },
     {
-      path: "admin",
+      path: "/divisist-app-admin/admin",
       element: <Admin />,
     },
     {
-      path: "login",
+      path: "/divisist-app-admin/login",
       element: <Login />
     }
   ]
