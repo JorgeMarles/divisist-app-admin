@@ -40,7 +40,7 @@ const PensumLoader: FC<PensumLoadComponentType> = ({ setLogs, setProgress }) => 
 
     const erasePensum = () => {
         if (confirm("Deseas borrar el pensum?")) {
-            toast.promise(fetch(`${import.meta.env.VITE_REACT_APP_BAKCEND_URL}/materias/deletepensum/115`, {
+            toast.promise(fetch(`${import.meta.env.VITE_REACT_APP_BACKEND_URL}/materias/deletepensum/115`, {
                 method: "DELETE",
                 headers: {
                     'authorization': `Bearer ${getAccessToken()}`
@@ -87,14 +87,14 @@ const PensumLoader: FC<PensumLoadComponentType> = ({ setLogs, setProgress }) => 
             params.append('delay', '2');
             console.log(getAccessToken());
             
-            fetch(`${import.meta.env.VITE_REACT_APP_BAKCEND_URL}/divisist/pensum?${params.toString()}`, {
+            fetch(`${import.meta.env.VITE_REACT_APP_BACKEND_URL}/divisist/pensum?${params.toString()}`, {
                 method: "GET",
                 headers: {
                     'authorization': `Bearer ${getAccessToken()}`
                 }
             })
         } else {
-            fetch(`${import.meta.env.VITE_REACT_APP_BAKCEND_URL}/materias/addpensum`, {
+            fetch(`${import.meta.env.VITE_REACT_APP_BACKEND_URL}/materias/addpensum`, {
                 body: JSON.stringify(json),
                 headers: {
                     'Content-Type': 'application/json',

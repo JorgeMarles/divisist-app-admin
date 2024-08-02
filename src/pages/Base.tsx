@@ -12,7 +12,7 @@ const Base = () => {
     const [error, setError] = useState<boolean>(false);
 
     useEffect(()=>{
-        console.log(import.meta.env);
+        console.log(import.meta.env.VITE_REACT_APP_BACKEND_URL);
         pensum.init().then(()=>{
             setLoading(false)
         }).catch(()=>{

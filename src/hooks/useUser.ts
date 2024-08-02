@@ -9,7 +9,7 @@ export default function useUser() {
   }
 
   const login = async (user: string, password: string): Promise<UserJWT> => {
-    const response = await fetch(`${import.meta.env.VITE_REACT_APP_BAKCEND_URL}/auth/login`, {
+    const response = await fetch(`${import.meta.env.VITE_REACT_APP_BACKEND_URL}/auth/login`, {
       method: "POST",
       body: JSON.stringify({ user, password }),
       headers: {
