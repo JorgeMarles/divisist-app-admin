@@ -23,7 +23,7 @@ const MateriaNodeTSX: FC<NodeProps<MateriaNode>> = ({ data }) => {
                 {
                     mostrarTodo ?
                         <>
-                            <Link to={`/materia/${data.materia.codigo}`} target="_blank" rel="noopener noreferrer">
+                            <Link to={`/materia/${data.materia.codigo}`} rel="noopener noreferrer">
                                 <div className="font-bold underline text-blue-600">
                                     {data.materia.codigo}
                                 </div>
