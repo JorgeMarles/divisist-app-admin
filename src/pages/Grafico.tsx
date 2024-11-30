@@ -16,7 +16,6 @@ import {
     type DefaultEdgeOptions,
     Background,
     Controls,
-    MiniMap,
 } from '@xyflow/react';
 import { getNodeList, MateriaDesbloqueo, MateriaNode } from "../back/graph/utilsNode";
 import MateriaNodeTSX from "../back/graph/MateriaNodeTSX";
