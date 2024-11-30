@@ -14,7 +14,7 @@ const MateriaNodeTSX: FC<NodeProps<MateriaNode>> = ({ data }) => {
     const mostrarTodo = useStore(zoomSelector)
 
     return (
-        <div className="nodo-materia">
+        <div className={`nodo-materia ${ data.materia.isElectiva ? "electiva" : "obligatoria" }`}>
             <Handle
                 type="target"
                 position={Position.Left}

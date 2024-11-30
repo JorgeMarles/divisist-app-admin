@@ -87,7 +87,7 @@ const Grafico = () => {
     return (
         <>
             <div>
-                A continuación se muestra un gráfico con cada materia del pensum con grupos disponibles, así como flechas de todas las materias que desbloquea cada una.
+                A continuación se muestra un gráfico con cada materia del pensum con grupos disponibles, así como flechas de todas las materias que desbloquea cada una (Las materias grises son electivas).
             </div>
             <div className="w-full  md:max-h-[450px] md:min-h-[450px] h-[450px] border-black border">
                 <ReactFlow
@@ -104,7 +104,7 @@ const Grafico = () => {
                 >
 
                     <Background />
-                    <MiniMap />
+                    {/*<MiniMap />*/}
                     <Controls />
                 </ReactFlow>
             </div >
