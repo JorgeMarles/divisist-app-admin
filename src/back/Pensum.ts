@@ -49,6 +49,21 @@ class Pensum {
         return undefined;
     }
 
+    buscar = (query: string): Materia[] => {
+        query = query.toLowerCase();
+
+        const results: Materia[] = [];
+
+        for(const codigo in this.materias){
+            const materia: Materia = this.materias[codigo];            
+            if(materia.nombre?.toLowerCase().includes(query) || materia.codigo?.toLowerCase().includes(query)){
+                results.push(materia);
+            }
+        }
+
+        return results;
+    }
+
     getMateriasPorSemestre = (): Materia[][] => {
         const arreglo: Materia[] = Object.entries(this.materias).sort(([_, materia1], [__, materia2])=>{
             return materia1.semestre! - materia2.semestre!;

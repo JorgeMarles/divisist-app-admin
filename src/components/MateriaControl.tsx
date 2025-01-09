@@ -18,6 +18,8 @@ type MateriaControlType = {
 const MateriaControl: FC<MateriaControlType> = ({ horario, setHorario, pensum }) => {
 
     const [codMateria, setCodMateria] = useState<string>("");
+    const [suggestions, setSuggestions] = useState<Materia[]>([]);
+    const [search, setSearch] = useState<string>("");
     const reg = /^(\d{7})$/g;
     const reg2 = /^(\d{0,7})$/g;
 
@@ -30,7 +32,7 @@ const MateriaControl: FC<MateriaControlType> = ({ horario, setHorario, pensum })
                     horarioNew.from(horario)
                     horarioNew.asignarMateria(mat);
                     console.log(horarioNew.toString());
-                    
+
                     setHorario(horarioNew)
                 } catch (error: any) {
                     toast.error(error)
@@ -75,16 +77,17 @@ const MateriaControl: FC<MateriaControlType> = ({ horario, setHorario, pensum })
 
     const handleChangeNum = (evt: ChangeEvent<HTMLInputElement>) => {
         const val = evt.target.value;
+        console.log(pensum.buscar(val));
 
-        if (reg2.test(val)) {
-            setCodMateria(val)
-        }
+        setSuggestions(pensum.buscar(val))
+        setCodMateria(val)
     }
 
     const handleKeyDown = (evt: KeyboardEvent<HTMLInputElement>) => {
         if (evt.key === 'Enter') {
             evt.preventDefault()
             addMateria()
+            setSuggestions([])
         }
     }
 
@@ -92,6 +95,10 @@ const MateriaControl: FC<MateriaControlType> = ({ horario, setHorario, pensum })
         navigator.clipboard.writeText(horario.getMateriasListAsString())
     }
 
+    const selectCodigo = (codigo: string) => {
+        setCodMateria(codigo)
+        setSuggestions([])
+    }
 
     return <>
         <div className="w-full md:w-[30%] md:max-h-[500px] md:h-[500px] flex flex-col h-[300px] bg-gray-100">
@@ -101,12 +108,26 @@ const MateriaControl: FC<MateriaControlType> = ({ horario, setHorario, pensum })
                         <Label htmlFor="codigo" value="Codigo materia (7 digitos)" />
                     </div>
                     <TextInput id="codigo" className="pe-2 h-1/3" value={codMateria} onKeyDown={handleKeyDown} onChange={handleChangeNum} />
-
+                    {suggestions && suggestions.length > 0 && (
+                        <div className="absolute z-10 mt-1 bg-white rounded-md shadow-lg border border-gray-200">
+                            <ul className="max-h-60 max-w-80 overflow-auto py-1">
+                                {suggestions.map((e, i) => (
+                                    <li
+                                        key={`materia_suggestion_${i}`}
+                                        className="px-4 py-2 hover:bg-gray-100 cursor-pointer"
+                                        onClick={() => selectCodigo(e.codigo!)}
+                                    >
+                                        {e.nombreCodigo}
+                                    </li>
+                                ))}
+                            </ul>
+                        </div>
+                    )}
                 </div>
                 <div className="flex items-end">
                     <Button.Group>
-                        <Button className="h-1/2 items-end bg-red-600 p-0" onClick={addMateria}><IoMdAdd className="h-6 w-6 m-0" /></Button>  
-                        <Button className="h-1/2 items-end p-0" color={'blue'} onClick={copyToClipboard}><FaRegClipboard className="h-6 w-6 m-0"/></Button>  
+                        <Button className="h-1/2 items-end bg-red-600 p-0" onClick={addMateria}><IoMdAdd className="h-6 w-6 m-0" /></Button>
+                        <Button className="h-1/2 items-end p-0" color={'blue'} onClick={copyToClipboard}><FaRegClipboard className="h-6 w-6 m-0" /></Button>
                     </Button.Group>
                 </div>
             </div>

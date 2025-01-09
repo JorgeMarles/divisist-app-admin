@@ -153,11 +153,12 @@ class Horario {
         if(materia.codigo! in this.materiasMatriculadas!){
             throw "Materia ya matriculada"
         }
+        let conflictInfo: string = "";
         for (const grupoCodigo in materia.grupos!) {
             const grupo = materia.grupos[grupoCodigo];
             console.log("Intentando grupo "+grupo.nombre);
-            
-            if (this.grupoValido(grupo, materia) === '') {
+            const materiaConflicto = this.grupoValido(grupo, materia);
+            if (materiaConflicto === '') {
                 this.getNewColor(materia.codigo!);
                 this.asignarGrupo(grupo, materia);
                 const matri = new Matricula();
@@ -167,9 +168,11 @@ class Horario {
                 this.sumaCreditos += materia.creditos!;
                 //console.log(this.horario.map(el => el.map(el2 => el2 ? "1" : "0").join("")).join("\n"));
                 return;
+            } else {
+                conflictInfo += `Grupo ${grupo.nombre} en conflicto con ${materiaConflicto}\n`;
             }
         }
-        throw "No se encontraron grupos validos para la materia "+materia.codigo
+        throw "No se encontraron grupos validos para la materia "+materia.codigo+"\nConflictos:\n"+conflictInfo
     }
 
     toString= (): string => {
