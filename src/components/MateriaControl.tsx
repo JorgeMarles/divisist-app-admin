@@ -19,9 +19,7 @@ const MateriaControl: FC<MateriaControlType> = ({ horario, setHorario, pensum })
 
     const [codMateria, setCodMateria] = useState<string>("");
     const [suggestions, setSuggestions] = useState<Materia[]>([]);
-    const [search, setSearch] = useState<string>("");
     const reg = /^(\d{7})$/g;
-    const reg2 = /^(\d{0,7})$/g;
 
     const addMateria = () => {
         if (reg.test(codMateria)) {
